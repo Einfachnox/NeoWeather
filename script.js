@@ -347,8 +347,8 @@ class NeoWeather {
 
       const timeString =
         i === 0
-          ? "JETZT"
-          : time.toLocaleTimeString("de-DE", {
+          ? "NOW"
+          : time.toLocaleTimeString("en-EN", {
               hour: "2-digit",
               minute: "2-digit",
             });
