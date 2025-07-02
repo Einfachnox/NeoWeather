@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEOWEATHER</title>
+    <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">NEOWEATHER</h1>
+                <p class="subtitle">CLEAN. MODERN. WEATHER.</p>
+            </div>
+            <div class="controls">
+                <!-- Dark Mode Toggle -->
+                <div class="dark-mode-controls">
+                    <button id="darkModeToggle" class="dark-mode-toggle">
+                        <span class="mode-icon">🌙</span>
+                        <span class="mode-text">DARK</span>
+                    </button>
+                </div>
+                
+                                
+                <!-- Theme Menu -->
+                <div class="theme-controls">
+                    <button id="themeMenuToggle" class="theme-menu-toggle">
+                        <span class="theme-icon">🎨</span>
+                        <span class="theme-text">STYLE</span>
+                    </button>
+                    <div id="themeMenu" class="theme-menu">
+                        <button class="theme-option active" data-theme="neobrutalism">
+                            <span class="theme-preview neo-preview"></span>
+                            <span>NEOBRUTALISM</span>
+                        </button>
+                        <button class="theme-option" data-theme="clean">
+                            <span class="theme-preview clean-preview"></span>
+                            <span>CLEAN</span>
+                        </button>
+                        <button class="theme-option" data-theme="minimal">
+                            <span class="theme-preview minimal-preview"></span>
+                            <span>MINIMAL</span>
+                        </button>
+                        <button class="theme-option" data-theme="retro">
+                            <span class="theme-preview retro-preview"></span>
+                            <span>RETRO</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="search-section">
+                <div class="input-group">
+                    <input type="text" id="cityInput" placeholder="ENTER CITY NAME" class="city-input">
+                    <button id="searchBtn" class="search-btn">GET WEATHER</button>
+                </div>
+            </div>
+
+            <div class="weather-display" id="weatherDisplay">
+                <div class="weather-card">
+                    <div class="location">
+                        <h2 id="cityName">ENTER A CITY</h2>
+                        <p id="country"></p>
+                    </div>
+                    
+                    <div class="temperature-section">
+                        <div class="temp-main">
+                            <span id="temperature">--</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="temp-feels">
+                            FEELS LIKE <span id="feelsLike">--</span>°C
+                        </div>
+                    </div>
+
+                    <div class="weather-info">
+                        <div class="weather-main">
+                            <div id="weatherIcon" class="weather-icon">☀️</div>
+                            <div class="weather-desc">
+                                <h3 id="weatherMain">CLEAR</h3>
+                                <p id="weatherDescription">Clear sky</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <span class="detail-label">HUMIDITY</span>
+                            <span class="detail-value" id="humidity">--%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">WIND</span>
+                            <span class="detail-value" id="windSpeed">-- KM/H</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">PRESSURE</span>
+                            <span class="detail-value" id="pressure">-- HPA</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">VISIBILITY</span>
+                            <span class="detail-value" id="visibility">-- KM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Forecast -->
+            <div class="forecast-section" id="hourlyForecast">
+                <h3 class="forecast-title">HEUTE - STÜNDLICH</h3>
+                <div class="forecast-container">
+                    <div class="forecast-scroll" id="hourlyScroll">
+                        <!-- Hourly items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Forecast -->
+            <div class="forecast-section" id="dailyForecast">
+                <h3 class="forecast-title">7-TAGE PROGNOSE</h3>
+                <div class="daily-forecast-container" id="dailyContainer">
+                    <!-- Daily items will be inserted here -->
+                </div>
+            </div>
+
+            
+            <div class="error-message" id="errorMessage">
+                <h3>ERROR!</h3>
+                <p id="errorText">Something went wrong</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>POWERED BY OPENMETEO - FREE WEATHER API</p>
+            <p>NEOWEATHER © 2024</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    </body>
+</html>

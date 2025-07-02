@@ -1,0 +1,1432 @@
+/* NEOBRUTALISM WEATHER WEBSITE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-black: #000000;
+    --primary-white: #ffffff;
+    --accent-yellow: #ffff00;
+    --accent-red: #ff0000;
+    --accent-blue: #0066ff;
+    --accent-green: #00ff00;
+    --accent-pink: #ff00ff;
+    --shadow-offset: 8px;
+    --border-width: 4px;
+}
+
+/* DARK MODE VARIABLES */
+[data-theme="dark"] {
+    --primary-black: #cccccc;
+    --primary-white: #1a1a1a;
+    --accent-yellow: #b8860b;
+    --accent-red: #8b4444;
+    --accent-blue: #4a5568;
+    --accent-green: #4a5d23;
+    --accent-pink: #8b4a8b;
+}
+
+/* DARK MODE BODY OVERRIDE */
+[data-theme="dark"] body {
+    background-color: #1a1a1a;
+    color: #e2e8f0;
+}
+
+[data-theme="light"] {
+    --primary-black: #000000;
+    --primary-white: #ffffff;
+    --accent-yellow: #ffff00;
+    --accent-red: #ff0000;
+    --accent-blue: #0066ff;
+    --accent-green: #00ff00;
+    --accent-pink: #ff00ff;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    line-height: 1.4;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER STYLES */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background-color: var(--accent-yellow);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--primary-black);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-content {
+    text-align: center;
+    flex: 1;
+}
+
+.title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* CONTROLS CONTAINER */
+.controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* DARK MODE TOGGLE */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.dark-mode-toggle:hover {
+    background-color: var(--accent-blue);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--primary-black);
+}
+
+.dark-mode-toggle:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--primary-black);
+}
+
+.mode-icon {
+    font-size: 1.2em;
+}
+
+/* THEME CONTROLS */
+.theme-controls {
+    position: relative;
+}
+
+.theme-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.theme-menu-toggle:hover {
+    background-color: var(--accent-pink);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--primary-black);
+}
+
+.theme-menu-toggle:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--primary-black);
+}
+
+.theme-icon {
+    font-size: 1.2em;
+}
+
+/* THEME MENU */
+.theme-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 6px 6px 0 var(--primary-black);
+    min-width: 220px;
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.theme-menu.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    padding: 15px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--primary-black);
+    border: none;
+    border-bottom: 2px solid var(--primary-black);
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.theme-option:last-child {
+    border-bottom: none;
+}
+
+.theme-option:hover {
+    background-color: var(--accent-yellow);
+    transform: translate(-2px, -2px);
+}
+
+.theme-option.active {
+    background-color: var(--accent-green);
+}
+
+/* THEME PREVIEWS */
+.theme-preview {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-black);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.neo-preview {
+    background: linear-gradient(45deg, #ffff00 50%, #ff0000 50%);
+    border: 3px solid #000000;
+}
+
+.clean-preview {
+    background: linear-gradient(45deg, #f8f9fa 50%, #e9ecef 50%);
+    border: 1px solid #dee2e6;
+}
+
+.minimal-preview {
+    background: linear-gradient(45deg, #ffffff 50%, #f5f5f5 50%);
+    border: 1px solid #cccccc;
+}
+
+.retro-preview {
+    background: linear-gradient(45deg, #ff6b35 50%, #f7931e 50%);
+    border: 2px solid #8b4513;
+}
+
+/* DESIGN THEME VARIATIONS */
+
+/* Clean Theme - normale saubere Website */
+.theme-clean {
+    --border-width: 1px;
+    --shadow-offset: 0px;
+    --accent-yellow: #ffffff;
+    --accent-red: #007bff;
+    --accent-blue: #f8f9fa;
+    --accent-green: #ffffff;
+    --accent-pink: #e9ecef;
+    --primary-black: #333333;
+    --primary-white: #ffffff;
+}
+
+.theme-clean .header {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .search-section {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .weather-display {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .temperature-section {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #0056b3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .weather-main {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .detail-item {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .detail-item:nth-child(even) {
+    background-color: #f8f9fa;
+    color: #333333;
+}
+
+.theme-clean .error-message {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: 1px solid #c82333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .footer {
+    background-color: #343a40;
+    color: #ffffff;
+    border: 1px solid #343a40;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .search-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #0056b3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 6px;
+}
+
+.theme-clean .search-btn:hover {
+    background-color: #0056b3;
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.theme-clean .city-input {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #ced4da;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 6px;
+}
+
+.theme-clean .city-input:focus {
+    background-color: #ffffff;
+    color: #333333;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+    transform: none;
+}
+
+.theme-clean .dark-mode-toggle,
+.theme-clean .theme-menu-toggle {
+    background-color: #6c757d;
+    color: #ffffff;
+    border: 1px solid #5a6268;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 6px;
+}
+
+.theme-clean .dark-mode-toggle:hover,
+.theme-clean .theme-menu-toggle:hover {
+    background-color: #5a6268;
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.theme-clean .theme-menu {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+}
+
+.theme-clean .theme-option {
+    color: #333333;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.theme-clean .theme-option:hover {
+    background-color: #f8f9fa;
+    transform: none;
+}
+
+.theme-clean .theme-option.active {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.theme-clean .forecast-section {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .hourly-item {
+    background-color: #007bff;
+    border: 1px solid #0056b3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 6px;
+}
+
+.theme-clean .hourly-item.current {
+    background-color: #ffc107;
+    color: #000000;
+}
+
+.theme-clean .daily-item {
+    background-color: #f8f9fa;
+    color: #333333;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.theme-clean .daily-item:nth-child(even) {
+    background-color: #e9ecef;
+}
+
+/* Minimal Theme - sanfte Farben */
+.theme-minimal {
+    --border-width: 1px;
+    --shadow-offset: 2px;
+    --accent-yellow: #6c757d;
+    --accent-red: #e9ecef;
+    --accent-blue: #dee2e6;
+    --accent-green: #6c757d;
+    --accent-pink: #adb5bd;
+}
+
+.theme-minimal .hourly-item {
+    background-color: #f8f9fa !important;
+    color: #495057 !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+.theme-minimal .hourly-item.current {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+}
+
+.theme-minimal .header,
+.theme-minimal .search-section,
+.theme-minimal .weather-display,
+.theme-minimal .temperature-section,
+.theme-minimal .weather-main,
+.theme-minimal .detail-item,
+.theme-minimal .error-message,
+.theme-minimal .footer,
+.theme-minimal .search-btn,
+.theme-minimal .city-input,
+.theme-minimal .dark-mode-toggle,
+.theme-minimal .theme-menu-toggle,
+.theme-minimal .theme-menu,
+.theme-minimal .forecast-section,
+.theme-minimal .hourly-item,
+.theme-minimal .daily-item {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.theme-minimal .hourly-item.current {
+    background-color: var(--accent-green) !important;
+    color: var(--primary-black) !important;
+}
+
+/* Retro Theme - warme Farben */
+.theme-retro {
+    --accent-yellow: #ff6b35;
+    --accent-red: #f7931e;
+    --accent-blue: #8b4513;
+    --accent-green: #daa520;
+    --accent-pink: #cd853f;
+}
+
+.theme-retro .header,
+.theme-retro .search-section,
+.theme-retro .weather-display,
+.theme-retro .temperature-section,
+.theme-retro .weather-main,
+.theme-retro .detail-item,
+.theme-retro .error-message,
+.theme-retro .footer,
+.theme-retro .search-btn,
+.theme-retro .city-input,
+.theme-retro .dark-mode-toggle,
+.theme-retro .theme-menu-toggle,
+.theme-retro .theme-menu {
+    border-radius: 0;
+    transform: skew(-2deg);
+}
+
+.theme-retro .title {
+    font-family: 'Courier New', monospace;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+
+/* MAIN CONTENT */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* SEARCH SECTION */
+.search-section {
+    background-color: var(--accent-blue);
+    padding: 30px;
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--primary-black);
+}
+
+.input-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.city-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    outline: none;
+}
+
+.city-input::placeholder {
+    color: var(--primary-black);
+    opacity: 0.6;
+}
+
+.city-input:focus {
+    background-color: var(--accent-yellow);
+    color: var(--primary-black);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--primary-black);
+}
+
+[data-theme="dark"] .city-input {
+    background-color: #2d2d2d;
+    color: #e2e8f0;
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .city-input::placeholder {
+    color: #a0aec0;
+    opacity: 0.8;
+}
+
+[data-theme="dark"] .city-input:focus {
+    background-color: #3d4852;
+    color: #e2e8f0;
+    border-color: #6b7280;
+    box-shadow: 6px 6px 0 #6b7280;
+}
+
+.search-btn {
+    padding: 15px 25px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.search-btn:hover {
+    background-color: var(--accent-pink);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--primary-black);
+}
+
+.search-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--primary-black);
+}
+
+/* WEATHER DISPLAY */
+.weather-display {
+    background-color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--primary-black);
+}
+
+[data-theme="dark"] .weather-display {
+    background-color: #2d2d2d;
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+.weather-card {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.location h2 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 5px;
+}
+
+.location p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* TEMPERATURE SECTION */
+.temperature-section {
+    background-color: var(--accent-green);
+    padding: 30px;
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    text-align: center;
+}
+
+.temp-main {
+    font-size: clamp(4rem, 12vw, 8rem);
+    font-weight: 800;
+    line-height: 0.8;
+    margin-bottom: 10px;
+}
+
+.temp-unit {
+    font-size: 0.6em;
+    vertical-align: top;
+}
+
+.temp-feels {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* WEATHER INFO */
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--accent-yellow);
+    padding: 25px;
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+}
+
+.weather-icon {
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.weather-desc h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.weather-desc p {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+/* WEATHER DETAILS */
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.detail-item {
+    background-color: var(--accent-pink);
+    padding: 20px;
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-item:nth-child(even) {
+    background-color: var(--accent-blue);
+    color: var(--primary-white);
+}
+
+[data-theme="dark"] .detail-item:nth-child(even) {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .detail-item {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+.detail-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.detail-value {
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+/* FORECAST SECTIONS */
+.forecast-section {
+    background-color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--primary-black);
+    padding: 30px;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.forecast-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--primary-black);
+}
+
+/* HOURLY FORECAST */
+.forecast-container {
+    overflow: hidden;
+}
+
+.forecast-scroll {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-black) var(--primary-white);
+}
+
+.forecast-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.forecast-scroll::-webkit-scrollbar-track {
+    background: var(--primary-white);
+    border: 2px solid var(--primary-black);
+}
+
+.forecast-scroll::-webkit-scrollbar-thumb {
+    background: var(--primary-black);
+    border-radius: 0;
+}
+
+.hourly-item {
+    flex: 0 0 auto;
+    min-width: 120px;
+    background-color: var(--accent-blue);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    padding: 20px 15px;
+    text-align: center;
+    color: var(--primary-white);
+}
+
+.hourly-item.current {
+    background-color: var(--accent-yellow);
+    color: var(--primary-black);
+}
+
+.hourly-time {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.hourly-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.hourly-temp {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.hourly-desc {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* DAILY FORECAST */
+.daily-forecast-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.daily-item {
+    display: grid;
+    grid-template-columns: 1fr 60px 80px 80px 1fr;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--accent-pink);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: 4px 4px 0 var(--primary-black);
+    padding: 20px;
+    color: var(--primary-white);
+}
+
+.daily-item:nth-child(even) {
+    background-color: var(--accent-green);
+}
+
+.daily-day {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.daily-icon {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.daily-temps {
+    text-align: center;
+}
+
+.daily-high {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 2px;
+}
+
+.daily-low {
+    font-size: 1rem;
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+.daily-desc {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+/* ERROR MESSAGE */
+.error-message {
+    display: none;
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    padding: 30px;
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--primary-black);
+    text-align: center;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.error-message h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.error-message p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+    border: var(--border-width) solid var(--primary-black);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--accent-yellow);
+}
+
+/* DARK MODE ANPASSUNGEN FÜR THEMES */
+[data-theme="dark"].theme-clean {
+    --primary-black: #e9ecef;
+    --primary-white: #1a1a1a;
+}
+
+[data-theme="dark"].theme-clean .header {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e9ecef;
+}
+
+[data-theme="dark"].theme-clean .search-section {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .weather-display {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e9ecef;
+}
+
+[data-theme="dark"].theme-clean .temperature-section {
+    background-color: #3182ce;
+    border-color: #2c5aa0;
+}
+
+[data-theme="dark"].theme-clean .weather-main {
+    background-color: #374151;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .detail-item {
+    background-color: #374151;
+    border-color: #4a5568;
+    color: #e9ecef;
+}
+
+[data-theme="dark"].theme-clean .detail-item:nth-child(even) {
+    background-color: #2d3748;
+    color: #e9ecef;
+}
+
+[data-theme="dark"].theme-clean .footer {
+    background-color: #1a202c;
+    border-color: #2d3748;
+}
+
+[data-theme="dark"].theme-clean .search-btn {
+    background-color: #3182ce;
+    border-color: #2c5aa0;
+}
+
+[data-theme="dark"].theme-clean .search-btn:hover {
+    background-color: #2c5aa0;
+}
+
+[data-theme="dark"].theme-clean .city-input {
+    background-color: #374151;
+    color: #e9ecef;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .city-input:focus {
+    background-color: #374151;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49,130,206,0.25);
+}
+
+[data-theme="dark"].theme-clean .dark-mode-toggle,
+[data-theme="dark"].theme-clean .theme-menu-toggle {
+    background-color: #4a5568;
+    border-color: #2d3748;
+}
+
+[data-theme="dark"].theme-clean .dark-mode-toggle:hover,
+[data-theme="dark"].theme-clean .theme-menu-toggle:hover {
+    background-color: #2d3748;
+}
+
+[data-theme="dark"].theme-clean .theme-menu {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .theme-option {
+    color: #e9ecef;
+    border-bottom-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .theme-option:hover {
+    background-color: #374151;
+}
+
+[data-theme="dark"].theme-clean .theme-option.active {
+    background-color: #3182ce;
+    color: #ffffff;
+}
+
+[data-theme="dark"].theme-clean .forecast-section {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .daily-item {
+    background-color: #374151 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"].theme-clean .daily-item:nth-child(even) {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"].theme-minimal {
+    --primary-black: #f8f9fa;
+    --primary-white: #1a1a1a;
+}
+
+[data-theme="dark"].theme-minimal .header {
+    background-color: #2c2c2c;
+    border-color: #555555;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .search-section {
+    background-color: #333333;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .weather-display {
+    background-color: #2c2c2c;
+    border-color: #555555;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .temperature-section {
+    background-color: #404040;
+    border-color: #555555;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .weather-main {
+    background-color: #383838;
+    border-color: #555555;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .detail-item {
+    background-color: #383838;
+    border-color: #555555;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .detail-item:nth-child(even) {
+    background-color: #2c2c2c;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .footer {
+    background-color: #1f1f1f;
+    border-color: #333333;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .search-btn {
+    background-color: #555555;
+    border-color: #404040;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .search-btn:hover {
+    background-color: #666666;
+}
+
+[data-theme="dark"].theme-minimal .city-input {
+    background-color: #383838;
+    color: #f8f9fa;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .city-input:focus {
+    background-color: #404040;
+    border-color: #777777;
+    box-shadow: 0 0 0 3px rgba(119,119,119,0.25);
+}
+
+[data-theme="dark"].theme-minimal .city-input::placeholder {
+    color: #aaaaaa;
+}
+
+[data-theme="dark"].theme-minimal .dark-mode-toggle,
+[data-theme="dark"].theme-minimal .theme-menu-toggle {
+    background-color: #555555;
+    border-color: #404040;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"].theme-minimal .dark-mode-toggle:hover,
+[data-theme="dark"].theme-minimal .theme-menu-toggle:hover {
+    background-color: #666666;
+}
+
+[data-theme="dark"].theme-minimal .theme-menu {
+    background-color: #2c2c2c;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .theme-option {
+    color: #f8f9fa;
+    border-bottom-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .theme-option:hover {
+    background-color: #383838;
+}
+
+[data-theme="dark"].theme-minimal .theme-option.active {
+    background-color: #555555;
+    color: #ffffff;
+}
+
+[data-theme="dark"].theme-minimal .forecast-section {
+    background-color: #2c2c2c;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .daily-item {
+    background-color: #383838 !important;
+    color: #f8f9fa !important;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .daily-item:nth-child(even) {
+    background-color: #2c2c2c !important;
+    color: #f8f9fa !important;
+}
+
+[data-theme="dark"].theme-minimal .hourly-item {
+    background-color: #383838 !important;
+    color: #f8f9fa !important;
+    border-color: #555555;
+}
+
+[data-theme="dark"].theme-minimal .hourly-item.current {
+    background-color: #555555 !important;
+    color: #f8f9fa !important;
+}
+
+[data-theme="dark"].theme-retro {
+    --accent-yellow: #d35400;
+    --accent-red: #e67e22;
+    --accent-blue: #8b4513;
+    --accent-green: #b8860b;
+    --accent-pink: #a0522d;
+}
+
+[data-theme="dark"].theme-retro .forecast-section {
+    background-color: #2d2d2d;
+    border-color: #8b4513;
+}
+
+[data-theme="dark"].theme-retro .daily-item {
+    background-color: #3d2914 !important;
+    color: #f4a460 !important;
+    border-color: #8b4513;
+}
+
+[data-theme="dark"].theme-retro .daily-item:nth-child(even) {
+    background-color: #2d1f0f !important;
+    color: #f4a460 !important;
+}
+
+/* DARK MODE - ALLE ELEMENTE GEDÄMPFT */
+[data-theme="dark"] .header {
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+[data-theme="dark"] .search-section {
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+[data-theme="dark"] .temperature-section {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .weather-main {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .error-message {
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+[data-theme="dark"] .search-btn {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .search-btn:hover {
+    box-shadow: 6px 6px 0 #4a5568;
+}
+
+[data-theme="dark"] .search-btn:active {
+    box-shadow: 2px 2px 0 #4a5568;
+}
+
+[data-theme="dark"] .dark-mode-toggle {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .dark-mode-toggle:hover {
+    box-shadow: 6px 6px 0 #4a5568;
+}
+
+[data-theme="dark"] .dark-mode-toggle:active {
+    box-shadow: 2px 2px 0 #4a5568;
+}
+
+[data-theme="dark"] .theme-menu-toggle {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .theme-menu-toggle:hover {
+    box-shadow: 6px 6px 0 #4a5568;
+}
+
+[data-theme="dark"] .theme-menu-toggle:active {
+    box-shadow: 2px 2px 0 #4a5568;
+}
+
+[data-theme="dark"] .theme-menu {
+    background-color: #2d2d2d;
+    border-color: #4a5568;
+    box-shadow: 6px 6px 0 #4a5568;
+}
+
+[data-theme="dark"] .theme-option {
+    color: #e2e8f0;
+    border-bottom-color: #4a5568;
+}
+
+[data-theme="dark"] .theme-option:hover {
+    background-color: var(--accent-yellow);
+    color: #000000;
+}
+
+[data-theme="dark"] .theme-option.active {
+    background-color: var(--accent-green);
+    color: #000000;
+}
+
+[data-theme="dark"] .theme-preview {
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .forecast-section {
+    background-color: #2d2d2d;
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+[data-theme="dark"] .forecast-title {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .hourly-item {
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .daily-item {
+    background-color: #374151 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568;
+    box-shadow: 4px 4px 0 #4a5568;
+}
+
+[data-theme="dark"] .daily-item:nth-child(even) {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .daily-day,
+[data-theme="dark"] .daily-high,
+[data-theme="dark"] .daily-low,
+[data-theme="dark"] .daily-desc {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .forecast-scroll::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .forecast-scroll::-webkit-scrollbar-thumb {
+    background: #4a5568;
+}
+
+[data-theme="dark"] .footer {
+    background-color: #2d2d2d;
+    color: #e2e8f0;
+    border-color: #4a5568;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #4a5568;
+}
+
+.footer p {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.footer p:last-child {
+    margin-bottom: 0;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .header-content {
+        order: 1;
+    }
+    
+    .controls {
+        order: 2;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .theme-menu {
+        right: auto;
+        left: 0;
+        min-width: 180px;
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .theme-menu.show {
+        transform: translateY(0);
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .city-input {
+        min-width: auto;
+    }
+    
+    .weather-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .weather-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .forecast-section {
+        padding: 20px;
+    }
+    
+    .hourly-item {
+        min-width: 100px;
+        padding: 15px 10px;
+    }
+    
+    .daily-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .daily-desc {
+        text-align: center;
+    }
+}
+
+/* LOADING ANIMATION */
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
